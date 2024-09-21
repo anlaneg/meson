@@ -288,7 +288,9 @@ class MesonApp:
                     os.unlink(cdf)
             raise
 
+#meson setup子命令入口
 def run(options: argparse.Namespace) -> int:
+    #解析命令行选项
     coredata.parse_cmd_line_options(options)
     app = MesonApp(options)
     app.generate()

@@ -42,8 +42,10 @@ class CommandLineParser:
         self.commands = {}
         self.hidden_commands = []
         self.parser = argparse.ArgumentParser(prog='meson', formatter_class=self.formatter)
+        #构造子命令
         self.subparsers = self.parser.add_subparsers(title='Commands', dest='command',
                                                      description='If no command is specified it defaults to setup command.')
+        #注册setup命令
         self.add_command('setup', msetup.add_arguments, msetup.run,
                          help_msg='Configure the project')
         self.add_command('configure', mconf.add_arguments, mconf.run,
@@ -85,9 +87,13 @@ class CommandLineParser:
             p = argparse.ArgumentParser(prog='meson ' + name, formatter_class=self.formatter)
             self.hidden_commands.append(name)
         else:
+            #添加子命令name
             p = self.subparsers.add_parser(name, help=help_msg, aliases=aliases, formatter_class=self.formatter)
+        #为子命令添加参数
         add_arguments_func(p)
+        #设置子命令处理函数
         p.set_defaults(run_func=run_func)
+        #添加命令
         for i in [name] + aliases:
             self.commands[i] = p
 
@@ -213,6 +219,7 @@ def ensure_stdout_accepts_unicode():
 
 def run(original_args, mainfile):
     if sys.version_info < (3, 7):
+        #meson必须使用python 3.7+版本
         print('Meson works correctly only with python 3.7+.')
         print(f'You have python {sys.version}.')
         print('Please update your environment')

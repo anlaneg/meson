@@ -26,4 +26,5 @@ if (meson_exe.parent / 'mesonbuild').is_dir():
 from mesonbuild import mesonmain
 
 if __name__ == '__main__':
+    #通过mesonmain进入主函数进行处理
     sys.exit(mesonmain.main())
